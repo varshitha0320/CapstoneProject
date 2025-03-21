@@ -1,6 +1,8 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 
+
+import "../style.css";
 const WelcomePage = () => {
   const navigate = useNavigate();
 
@@ -11,8 +13,8 @@ const WelcomePage = () => {
   ];
 
   return (
-    <div style={{ padding: "20px", fontFamily: "Arial" }}>
-      {/* Navigation Links */}
+    <div>
+      
       <nav>
         <ul>
           <li><Link to="/user-dashboard">Dashboard</Link></li>
@@ -20,12 +22,12 @@ const WelcomePage = () => {
         </ul>
       </nav>
 
-      {/* Scrum Teams Section */}
+     
       <h2>Scrum Teams</h2>
       <ul>
         {scrumTeams.map((team) => (
           <li key={team.id}>
-            {team.name}{" "}
+            {team.name}  
             <button onClick={() => navigate("/login")}>Get Details</button>
           </li>
         ))}

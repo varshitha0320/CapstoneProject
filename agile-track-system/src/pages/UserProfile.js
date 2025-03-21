@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import "../style.css";
+
 
 const initialUsers = {
   "employee1@example.com": {
@@ -44,16 +47,21 @@ const UserProfile = () => {
   };
 
   return (
-    <div style={{ padding: "20px", fontFamily: "Arial", maxWidth: "600px" }}>
+    <div>
+      <nav>
+        <ul>
+          <li><Link to="/">Dashboard</Link></li>
+          <li><Link to="/userProfile">Profiles</Link></li>
+          <li><Link to="/"><button onClick={() => alert("Logged Out")}>Logout</button></Link></li>
+        </ul>
+      </nav>
       <h2>User Profiles</h2>
 
-      {/* Add New User Button */}
-      {!showForm && <button onClick={() => setShowForm(true)} style={{ marginBottom: "10px" }}>Add New User</button>}
+      {!showForm && <button onClick={() => setShowForm(true)}>Add New User</button>}
 
-      {/* New User Form */}
       {showForm && (
-        <div style={{ marginTop: "10px", padding: "10px", border: "1px solid #ccc", background: "#f9f9f9" }}>
-          <button onClick={() => setShowForm(false)} style={{ marginBottom: "10px" }}>Cancel</button>
+        <div>
+          <button onClick={() => setShowForm(false)}>Cancel</button>
           <div>
             <label>Name: </label>
             <input
@@ -82,30 +90,25 @@ const UserProfile = () => {
         </div>
       )}
 
-      {/* List of Users */}
       <ul>
         {Object.keys(users).map((email) => (
-          <li key={email} style={{ marginBottom: "15px", padding: "10px", border: "1px solid #ddd", background: "#f1f1f1" }}>
+          <li key={email}>
             <b>Name:</b> {users[email].name} <br />
             <b>Email:</b> {email} <br />
-            <button onClick={() => setSelectedEmail(email)} style={{ marginTop: "5px" }}>Get History</button>
+            <button onClick={() => setSelectedEmail(email)}>Get History</button>
           </li>
         ))}
       </ul>
 
-      {/* Display Task History of Selected User */}
       {selectedEmail && users[selectedEmail] && (
-        <div style={{ marginTop: "20px", padding: "10px", border: "1px solid #ccc", background: "#fff8e1" }}>
+        <div>
           <h3>Tasks Worked By {users[selectedEmail].name}</h3>
           <ul>
             {users[selectedEmail].tasks.map((task, index) => (
-              <li key={index} style={{ marginBottom: "10px" }}>
+              <li key={index}>
                 <b>Title:</b> {task.title} <br />
                 <b>Description:</b> {task.description} <br />
-                <b>Status:</b> 
-                <span style={{ color: task.status === "Completed" ? "green" : "red", fontWeight: "bold" }}>
-                  {" "}{task.status}
-                </span>
+                <b>Status:</b> {task.status}
               </li>
             ))}
           </ul>

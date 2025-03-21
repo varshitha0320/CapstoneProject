@@ -1,62 +1,83 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/AuthProvider";
+import "../style.css";
 
-const SignUp = () => {
+
+
+const Signup = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const navigate = useNavigate(); // 🚀 Used for redirection
+  const [role, setRole] = useState("user"); 
+  const { signup } = useContext(AuthContext);
+  const navigate = useNavigate();
 
-  const handleSignUp = () => {
+  const handleSignup = () => {
     if (!name || !email || !password) {
-      alert("Please fill in all fields!");
+      alert("Please fill in all fields.");
       return;
     }
 
-    // Storing user data in localStorage (for simplicity)
-    const userData = { name, email, password };
-    localStorage.setItem("user", JSON.stringify(userData));
+    
+    const users = JSON.parse(localStorage.getItem("users")) || [];
 
-    alert("Signup successful! Redirecting to login...");
-    navigate("/login"); // 🔥 Redirecting to login page
+    
+    if (users.some((user) => user.email === email)) {
+      alert("Email already exists! Please log in.");
+      return;
+    }
+
+    
+    const newUser = { name, email, password, role };
+    users.push(newUser);
+    localStorage.setItem("users", JSON.stringify(users));
+
+    
+    if (signup) {
+      signup(name, email, password, role);
+    }
+
+    alert("Signed up successfully! Please log in.");
+    navigate("/login");
   };
 
   return (
-    <div style={{ padding: "20px", fontFamily: "Arial" }}>
-      {/* Navigation Links */}
+    <div>
       <nav>
         <ul>
-          <li><Link to="/user-dashboard">Dashboard</Link></li>
+          <li><Link to="/">Dashboard</Link></li>
           <li><Link to="/login">Login</Link></li>
         </ul>
       </nav>
-
-      {/* Sign Up Form */}
+      <div className="auth-container">
+  <div className="auth-box">
       <h2>Sign Up</h2>
+
       <label>Name: </label>
-      <input
-        type="text"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-      />
-
-      <label style={{ marginLeft: "10px" }}>Email: </label>
-      <input
-        type="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-
-      <label style={{ marginLeft: "10px" }}>Password: </label>
-      <input
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-
-      <button onClick={handleSignUp}>Sign Up</button>
+      <br/>
+      <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
+      <br/>
+      <label>Email: </label>
+      <br/>
+      <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+      <br/>
+      <label>Password: </label>
+      <br/>
+      <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+      <br/>
+      <label>Role: </label>
+      <br/>
+      <select value={role} onChange={(e) => setRole(e.target.value)}>
+        <option value="user">User</option>
+        <option value="admin">Admin</option>
+      </select>
+      <br/>
+      <button onClick={handleSignup}>Sign Up</button>
+    </div>
+    </div>
     </div>
   );
 };
 
-export default SignUp;
+export default Signup;
