@@ -5,7 +5,7 @@ const SignUp = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const navigate = useNavigate(); // 🚀 Used for redirection
+  const navigate = useNavigate(); 
 
   const handleSignUp = () => {
     if (!name || !email || !password) {
@@ -13,17 +13,17 @@ const SignUp = () => {
       return;
     }
 
-    // Storing user data in localStorage (for simplicity)
+    
     const userData = { name, email, password };
     localStorage.setItem("user", JSON.stringify(userData));
 
     alert("Signup successful! Redirecting to login...");
-    navigate("/login"); // 🔥 Redirecting to login page
+    navigate("/login");
   };
 
   return (
     <div style={{ padding: "20px", fontFamily: "Arial" }}>
-      {/* Navigation Links */}
+     
       <nav>
         <ul>
           <li><Link to="/user-dashboard">Dashboard</Link></li>
@@ -31,7 +31,7 @@ const SignUp = () => {
         </ul>
       </nav>
 
-      {/* Sign Up Form */}
+     
       <h2>Sign Up</h2>
       <label>Name: </label>
       <input
